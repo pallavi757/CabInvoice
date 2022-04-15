@@ -50,10 +50,10 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenMultipleRides_ShouldReturn_TotalFare()
         {
-            double expected = 32;
-            Ride[] ridesTestObj = { new Ride(0.1, 2), new Ride(2, 2), new Ride(0.2, 2) };
-            double result = invoiceGenetratorTestObj.CalculateFare(ridesTestObj);
-            Assert.AreEqual(expected, result);
+            double expected = 30.0;
+            Ride[] ridesTestObj = { new Ride(2.0, 5), new Ride(0.1, 1) };
+            EnhancedInvoice result = invoiceGenetratorTestObj.CalculateFare(ridesTestObj);
+            Assert.AreEqual(expected, result.totalFare);
         }
         [Test]
         public void GivenNullRides_ShouldThrow_CabInvoiceException()
@@ -61,7 +61,7 @@ namespace CabInvoiceGeneratorTest
             try
             {
                 Ride[] ridesTestObj = null;
-                double result = invoiceGenetratorTestObj.CalculateFare(ridesTestObj);
+                EnhancedInvoice result = invoiceGenetratorTestObj.CalculateFare(ridesTestObj);
             }
             catch (Exception e)
             {
