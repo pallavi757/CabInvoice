@@ -18,7 +18,7 @@ namespace CabInvoiceGeneratorTest
         {
             double expected = 25;
             
-            double result = InvoiceGenerator.CalculateFare(2, 5);
+            double result = InvoiceGenerator.CalculateFare(2, 5,RideType.NORMAL);
             Assert.AreEqual(expected, result);
         }
         [Test]
@@ -27,7 +27,7 @@ namespace CabInvoiceGeneratorTest
             try
             {
               
-                double result =InvoiceGenerator. CalculateFare(-2, 5);
+                double result =InvoiceGenerator. CalculateFare(-2, 5, RideType.NORMAL);
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace CabInvoiceGeneratorTest
             try
             {
                
-                double result = InvoiceGenerator.CalculateFare(2, -5);
+                double result = InvoiceGenerator.CalculateFare(2, -5, RideType.NORMAL);
             }
             catch (Exception e)
             {
@@ -50,8 +50,8 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenMultipleRides_ShouldReturn_EnhancedInvoice()
         {
-            double expected = 30.0;
-            Ride[] ridesTestObj = { new Ride(2.0, 5), new Ride(0.1, 1) };
+            double expected = 45.0;
+            Ride[] ridesTestObj = { new Ride(2.0, 5, RideType.NORMAL), new Ride(0.1, 1, RideType.PREMIUM) };
             EnhancedInvoice result = InvoiceGenerator.CalculateFare(ridesTestObj);
             Assert.AreEqual(expected, result.totalFare);
         }
@@ -84,8 +84,8 @@ namespace CabInvoiceGeneratorTest
         [Test]
         public void GivenUserId_RideRepository_ShouldReturn_EnhancedInvoice()
         {
-            double expected = 116;
-            Ride[] rides = { new Ride(0.1, 2), new Ride(0.1, 10), new Ride(5, 50) };
+            double expected = 206;
+            Ride[] rides = { new Ride(0.1, 2,RideType.PREMIUM), new Ride(0.1, 10, RideType.NORMAL), new Ride(5, 50,RideType.PREMIUM) };
             RideRepository rideRepoTestObj = new RideRepository();
             rideRepoTestObj.AddRide("user1", rides);
             EnhancedInvoice result = rideRepoTestObj.GetInvoice("user1");

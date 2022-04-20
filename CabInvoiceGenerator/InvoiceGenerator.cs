@@ -1,42 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace CabInvoiceGenerator
 {
+    using System;
     public class InvoiceGenerator
     {
-        private static readonly int minimumFare = 5;
-      
-        public static double CalculateFare(double distanceInKM, int timeInMin)
+        //Charges of the rides
+        private static int CHARGE_PER_KM;
+        private static int CHARGE_PER_MIN;
+        private static int MINIMUM_FARE;
+
+
+        //Calculates the total fare for a particular ride
+        public static double CalculateFare(double distanceInKM, int timeInMin, RideType rideType)
         {
-              double calculatedFare = 0;
+            SetCharges(rideType);
+            double calculatedFare = 0;
             if (distanceInKM <= 0)
             {
-                throw new Cabexception(Cabexception.ExceptionType.Invalid_Dist, "Invalid Distance");
+                throw new Cabexception(Cabexception.ExceptionType.Invalid_Time, "Invalid Distance");
             }
             if (timeInMin < 0)
             {
                 throw new Cabexception(Cabexception.ExceptionType.Invalid_Time, "Invalid Time");
             }
-            calculatedFare = (10 * distanceInKM) + timeInMin;
-            return Math.Max(calculatedFare, minimumFare);
+            calculatedFare = (CHARGE_PER_KM * distanceInKM) + (CHARGE_PER_MIN * timeInMin);
+            return Math.Max(calculatedFare, MINIMUM_FARE);
         }
-        //public double CalculateFare(Ride[] rides)
-        //{
-        //    double totalFare = 0;
-        //    if (rides == null)
-        //    {
-        //        throw new Cabexception(Cabexception.ExceptionType.Null_rides, "Rides Are Null");
-        //    }
-        //    foreach (Ride ride in rides)
-        //    {
-        //        totalFare += this.CalculateFare(ride.distance, ride.time);
-        //    }
-        //    return totalFare;
-        //}
+        //Generates Rides Invoice Summary
         public static EnhancedInvoice CalculateFare(Ride[] rides)
         {
             double totalFare = 0;
@@ -46,9 +37,29 @@ namespace CabInvoiceGenerator
             }
             foreach (Ride ride in rides)
             {
-                totalFare += CalculateFare(ride.distance, ride.time);
+                totalFare += CalculateFare(ride.distance, ride.time, ride.rideType);
             }
             return new EnhancedInvoice(rides.Length, totalFare);
+        }
+
+        
+        //private method for setting the charges for a each type of ride 
+        private static void SetCharges(RideType rideType)
+        {
+            if (rideType.Equals(RideType.NORMAL))
+            {
+                CHARGE_PER_KM = 10;
+                CHARGE_PER_MIN = 1;
+                MINIMUM_FARE = 5;
+            }
+            else if (rideType.Equals(RideType.PREMIUM))
+            {
+                CHARGE_PER_KM = 15;
+                CHARGE_PER_MIN = 2;
+                MINIMUM_FARE = 20;
+            }
+            else
+                throw new Cabexception(Cabexception.ExceptionType.Invalid_Ride_Type, "Invalid Ride Type");
         }
     }
 }

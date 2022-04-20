@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CabInvoiceGenerator
 {
+    using System;
+    //Class to Enhanced invoice
     public class EnhancedInvoice
     {
-        public int numberOfRides;
+        private int numberOfRides;
         public double totalFare;
-        public double averageFare;
+        private double averageFare;
 
         public EnhancedInvoice(int numberOfRides, double totalFare)
         {
