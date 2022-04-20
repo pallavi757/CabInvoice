@@ -8,10 +8,11 @@ namespace CabInvoiceGenerator
 {
     public class InvoiceGenerator
     {
-        private readonly int minimumFare = 5;
-        private double calculatedFare = 0;
-        public double CalculateFare(double distanceInKM, int timeInMin)
+        private static readonly int minimumFare = 5;
+      
+        public static double CalculateFare(double distanceInKM, int timeInMin)
         {
+              double calculatedFare = 0;
             if (distanceInKM <= 0)
             {
                 throw new Cabexception(Cabexception.ExceptionType.Invalid_Dist, "Invalid Distance");
@@ -36,7 +37,7 @@ namespace CabInvoiceGenerator
         //    }
         //    return totalFare;
         //}
-        public EnhancedInvoice CalculateFare(Ride[] rides)
+        public static EnhancedInvoice CalculateFare(Ride[] rides)
         {
             double totalFare = 0;
             if (rides == null)
@@ -45,7 +46,7 @@ namespace CabInvoiceGenerator
             }
             foreach (Ride ride in rides)
             {
-                totalFare += this.CalculateFare(ride.distance, ride.time);
+                totalFare += CalculateFare(ride.distance, ride.time);
             }
             return new EnhancedInvoice(rides.Length, totalFare);
         }
